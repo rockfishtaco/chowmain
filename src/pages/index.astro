@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+const posts = await getCollection("posts");
+const services = await getCollection("services", (entry) =>
+  import.meta.env.PROD ? entry.data.available : true
+);
+---
+
+<BaseLayout>
+  <div class="homepage">
+    <div>
+      <h1>Gmas pizza</h1>
+    </div>
+    <div>
+      <h2>deluxe deep dish</h2>
+      <ul>{services.map((s) => <li role="listitem">{s.data.title}</li>)}</ul>
+    </div>
+    <div class="post-wrapper">
+      <h2>menu</h2>
+      <div>{posts.slice(0, 1).map((p) => <PostCard post={p} />)}</div>
+    </div>
+  </div>
+</BaseLayout>
